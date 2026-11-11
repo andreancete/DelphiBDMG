@@ -182,6 +182,7 @@ curl -X PATCH -H "X-API-Key: SUA_CHAVE" -H "Content-Type: application/json" \
 | `pagina` | 1 | maior ou igual a 1 |
 | `tamanho` | 20 | de 1 a 100 |
 | `status` | todos | `PENDENTE`, `EM_ANDAMENTO`, `CONCLUIDA`, `CANCELADA` |
+| `prioridade` | todas | `1` (Baixa), `2` (Média), `3` (Alta) ou `4` (Urgente) |
 | `busca` | vazio | texto no título ou na descrição (até 100 caracteres; `%`, `_` e `[` são tratados como texto) |
 
 ### Reutilização em novas rotas
@@ -396,6 +397,5 @@ Compile e execute **Tests** (DUnitX). Os testes cobrem o Service com um reposit�
 ## Possíveis evoluções
 
 - Autenticação por usuário (JWT/OAuth2) quando houver múltiplos usuários.
-- Paginação em `GET /api/tarefas`.
 - Testes de integração do Repository contra um banco de testes.
 - Pipeline de CI (GitHub Actions com runner Windows) executando a suíte DUnitX.
