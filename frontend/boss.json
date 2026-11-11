@@ -1,0 +1,12 @@
+{
+	"name": "bdmg-tarefas-frontend",
+	"description": "Cliente VCL do servi\u00e7o de Tarefas",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./src",
+	"browsingpath": "",
+	"projects": [],
+	"dependencies": {
+		"github.com/viniciussanchez/restrequest4delphi": "^4.0.0"
+	}
+}

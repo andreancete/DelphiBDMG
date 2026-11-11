@@ -1,0 +1,30 @@
+# Dependências instaladas pelo boss (backend e frontend)
+modules/
+
+# Saída de compilação do Delphi
+Win32/
+Win64/
+__history/
+__recovery/
+*.dcu
+*.dcp
+*.exe
+*.dll
+*.map
+*.drc
+*.rsm
+*.identcache
+*.local
+*.tvsconfig
+*.stat
+*.dsk
+*.~*
+
+# Logs da API
+logs/
+
+# Certificados HTTPS locais
+backend/certificados/
+
+# Instruções para agentes de IA quando existir (uso local, não versionar)
+AGENTS.md

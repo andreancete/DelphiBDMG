@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{7E1C2B9A-4D3F-4A6B-9C21-5E8F0A1B2C3D}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="backend\Api.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="backend\tests\Tests.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="frontend\Frontend.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Api">
+        <MSBuild Projects="backend\Api.dproj"/>
+    </Target>
+    <Target Name="Api:Clean">
+        <MSBuild Projects="backend\Api.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Api:Make">
+        <MSBuild Projects="backend\Api.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Tests">
+        <MSBuild Projects="backend\tests\Tests.dproj"/>
+    </Target>
+    <Target Name="Tests:Clean">
+        <MSBuild Projects="backend\tests\Tests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Tests:Make">
+        <MSBuild Projects="backend\tests\Tests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Frontend">
+        <MSBuild Projects="frontend\Frontend.dproj"/>
+    </Target>
+    <Target Name="Frontend:Clean">
+        <MSBuild Projects="frontend\Frontend.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Frontend:Make">
+        <MSBuild Projects="frontend\Frontend.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Api;Tests;Frontend"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Api:Clean;Tests:Clean;Frontend:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Api:Make;Tests:Make;Frontend:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
