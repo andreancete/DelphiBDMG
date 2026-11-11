@@ -277,6 +277,27 @@ Regras de negócio implementadas no Service:
 
 ---
 
+## Boas práticas (Clean Code)
+
+O código passou por uma revisão de Clean Code. Cada item abaixo indica onde conferir.
+
+| Prática | Como foi aplicada | Onde ver |
+|---|---|---|
+| **Responsabilidade única** | Cada classe faz uma coisa. A tela só coordena: a lista, os combos, a paginação, as chamadas assíncronas e o formato das respostas HTTP ficam em classes próprias. | `TarefaListViewAdapter.pas`, `ComboEnumHelper.pas`, `ControlePaginacao.pas`, `ExecutorAssincrono.pas`, `RespostaHttp.pas` |
+| **Sem repetição (DRY)** | Tratamento de exceções, paginação SQL, execução de queries e validação escritos uma única vez e reutilizados. | `TBaseController.Executar`, `TConsultaPaginada`, `TQueryBase`, `TTarefa.Validar` |
+| **Mesma regra nos dois lados** | API e cliente compilam os mesmos models, enums e constantes. A tela de cadastro valida com o mesmo `TTarefa.Validar` que a API usa. | `Compartilhada/`, `View.TarefaCadastro.pas` |
+| **Sem números e textos mágicos** | Rotas, nomes de parâmetros, campos JSON e limites de tamanho estão em constantes nomeadas. | `ApiConstantes.pas` (`ROTA_*`, `RECURSO_*`), `Paginacao.pas` (`PARAM_*`, `CAMPO_*`), `Tarefa.pas` (`TAREFA_*_TAMANHO_*`, `PARAM_FILTRO_*`) |
+| **Nomes que revelam a intenção** | Métodos curtos com verbo e objeto, em português, padronizados em todas as camadas. | `MontarFiltro`, `ConverterStatus`, `ValidarTransicaoStatus`, `LerPaginacao`, `EnviarJSONELiberar` |
+| **Dependência de abstrações** | Controller → `ITarefaService` → `ITarefaRepository` → `IConexaoFactory`. As classes concretas são escolhidas só no composition root e na fábrica de conexão. | `Container.pas`, `Conexao.Factory.pas`, `*.Interfaces.pas` |
+| **Exceções com significado** | Erros de negócio são exceções tipadas, convertidas em status HTTP num único ponto, em vez de códigos de retorno espalhados. | `ServiceExceptions.pas` (`EValidacaoException` → 400, `ENaoEncontradoException` → 404, `ERegraNegocioException` → 409) |
+| **Tipos em vez de strings soltas** | Status e prioridade circulam como enums e só viram texto ou número na borda (JSON e SQL). | `StatusTarefaEnum.pas`, `PrioridadeTarefaEnum.pas` |
+| **Interface sem acoplamento à posição** | Os combos guardam o valor do enum em cada item, então reordenar ou acrescentar itens ("Todos") não quebra a conversão. | `TComboEnumHelper.TryObterStatus` / `TryObterPrioridade` |
+| **Caminho feliz legível** | Cada ação do controller contém só o fluxo principal. Validação e tradução de erros ficam nos auxiliares. | `TarefaController.pas`, `BaseController.pas` (`LerIdParam`, `LerCorpoJSON`, `LerPaginacao`) |
+| **Testes como especificação** | O nome do teste descreve o comportamento esperado. O service é testado isolado, com repositório em memória. | `backend/tests/services/TarefaServiceTests.pas` (ex.: `Criar_DeveFalhar_QuandoTituloCurto`, `Listar_DeveFalhar_QuandoPrioridadeInvalida`) |
+| **Comentários explicam o porquê** | Comentários registram decisões e restrições, não o óbvio: por que cada parâmetro aparece uma vez no SQL (ADO), por que existe uma cópia local antes do método anônimo, por que a chave está em constante. | `TarefaRepository.SQLServer.pas`, `ConfiguracaoApi.pas` |
+
+---
+
 ## Segurança da comunicação
 
 - **Chave de API** obrigatória no cabeçalho `X-API-Key` para todas as rotas `/api/*` (middleware `ApiKeyMiddleware`), com:
